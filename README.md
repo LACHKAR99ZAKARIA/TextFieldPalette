@@ -2,7 +2,7 @@
 
 `TextFieldPalette` is a Swift package that provides a collection of customizable text fields, including a `PaletteDatePickerTextField` for selecting dates with a user-friendly interface. This package makes it easy to incorporate styled text fields into your SwiftUI applications.
 
-![Uploading Simulator Screenshot - iPhone 16 - 2024-10-13 at 15.57.59.png…]()
+![Simulator Screenshot - iPhone 16 - 2024-10-13 at 15 57 59](https://github.com/user-attachments/assets/078dd831-1ca2-466a-a12a-005505cb3d44)
 
 ## Features
 
