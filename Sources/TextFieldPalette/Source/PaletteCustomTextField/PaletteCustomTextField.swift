@@ -48,9 +48,14 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
         
         
         hostingVC.view.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            
-//        ])
+        
+        NSLayoutConstraint.activate([
+            hostingVC.view.rightAnchor.constraint(equalTo: inputView.rightAnchor),
+            hostingVC.view.leftAnchor.constraint(equalTo: inputView.leftAnchor),
+            hostingVC.view.topAnchor.constraint(equalTo: inputView.topAnchor),
+            hostingVC.view.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
+//            hostingVC.view.heightAnchor.constraint(equalToConstant: 100)
+        ])
         
         textField.inputView = inputView
         
