@@ -9,6 +9,13 @@ import SwiftUI
 
 struct DemoView: View {
     @State private var selectedDate: Date? = nil // Optional date for the date picker
+    
+//    @FocusState private var focussed: Bool
+    @State private var height: CGFloat = .zero
+    @State private var text = ""
+    @State private var focussed = false
+    
+    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         ScrollView {
@@ -33,6 +40,23 @@ struct DemoView: View {
                                             placeholder: "Select Date",
                                             minDate: Date(), // Minimum date is today
                                            maxDate: Calendar.current.date(byAdding: .year, value: 1, to: Date()), showCancelButton: false, showDoneButton: false, action: action)
+                
+                // Text Field with custom Keyboard
+                PaletteCustomTextField(
+                    placeholder: "placeholder",
+                    text: text
+                ) {
+                    LazyVGrid(
+                        columns: columns) {
+                            ForEach(1...9, id: \.self) { i in
+                                Text(String(i))
+                                    .padding()
+                                    .onTapGesture {
+                                        text = String(i)
+                                    }
+                            }
+                        }
+                }
             }
             .padding()
         }

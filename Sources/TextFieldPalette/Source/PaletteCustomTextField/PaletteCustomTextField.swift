@@ -12,18 +12,15 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
     public let placeholder: String
     public let text: String?
     public var content: Content
-    public let action: (() -> Void)?
     
     public init(
         placeholder: String,
         text: String?,
-        content: () -> Content,
-        action: (() -> Void)? = nil
+        content: () -> Content
     ) {
         self.placeholder = placeholder
         self.text = text
         self.content = content()
-        self.action = action
     }
     
     public func makeUIView(context: Context) -> UITextField {
@@ -40,7 +37,7 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
         
         
         hostingVC.view.translatesAutoresizingMaskIntoConstraints = false
-//
+        
         NSLayoutConstraint.activate([
             hostingVC.view.rightAnchor.constraint(equalTo: inputView.rightAnchor),
             hostingVC.view.leftAnchor.constraint(equalTo: inputView.leftAnchor),
@@ -74,17 +71,6 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
 
         init(_ parent: PaletteCustomTextField) {
             self.parent = parent
-        }
-        
-        @MainActor @objc func donePressed() {
-            if let action = parent.action {
-                action()
-            }
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
-        
-        @MainActor @objc func cancelPressed() {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
 }
