@@ -5,35 +5,25 @@
 //  Created by Zakaria Lachkar on 21/1/2025.
 //
 
-
 import SwiftUI
 import UIKit
 
 public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
     public let placeholder: String
-    public var showCancelButton: Bool = true
-    public var showDoneButton: Bool = true
+    public let text: String?
     public var content: Content
     public let action: (() -> Void)?
     
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter
-    }
-    
     public init(
         placeholder: String,
-        showCancelButton: Bool = true,
-        showDoneButton: Bool = true,
+        text: String?,
         content: () -> Content,
         action: (() -> Void)? = nil
     ) {
         self.placeholder = placeholder
-        self.action = action
-        self.showCancelButton = showCancelButton
-        self.showDoneButton = showDoneButton
+        self.text = text
         self.content = content()
+        self.action = action
     }
     
     public func makeUIView(context: Context) -> UITextField {
@@ -41,20 +31,21 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
         textField.placeholder = placeholder
         
         let hostingVC = UIHostingController(rootView: content)
-        var inputView = UIView()
+        let inputView = UIView()
+        
+        hostingVC.view.sizeToFit()
+        inputView.frame = hostingVC.view.frame
         
         inputView.addSubview(hostingVC.view)
-//        hostingVC.didMove(toParent: self)
         
         
         hostingVC.view.translatesAutoresizingMaskIntoConstraints = false
-        
+//
         NSLayoutConstraint.activate([
             hostingVC.view.rightAnchor.constraint(equalTo: inputView.rightAnchor),
             hostingVC.view.leftAnchor.constraint(equalTo: inputView.leftAnchor),
             hostingVC.view.topAnchor.constraint(equalTo: inputView.topAnchor),
             hostingVC.view.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
-//            hostingVC.view.heightAnchor.constraint(equalToConstant: 100)
         ])
         
         textField.inputView = inputView
@@ -64,29 +55,14 @@ public struct PaletteCustomTextField<Content: View>: UIViewRepresentable {
         
         var items = [UIBarButtonItem]()
         
-        if showCancelButton {
-            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: context.coordinator, action: #selector(Coordinator.cancelPressed))
-            items.append(cancelButton)
-        }
-        
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         items.append(flexibleSpace)
-        
-        if showDoneButton {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: context.coordinator, action: #selector(Coordinator.donePressed))
-            items.append(doneButton)
-        }
-        
-        if showDoneButton || showCancelButton {
-            toolbar.setItems(items, animated: true)
-            textField.inputAccessoryView = toolbar
-        }
 
         return textField
     }
 
     public func updateUIView(_ uiView: UITextField, context: Context) {
-//        uiView.text = selectedDate.map { dateFormatter.string(from: $0) }
+        uiView.text = self.text
     }
 
     public func makeCoordinator() -> Coordinator {
