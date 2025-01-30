@@ -1,68 +1,75 @@
 # TextFieldPalette
 
-`TextFieldPalette` is a Swift package that provides a collection of customizable text fields, including a `PaletteDatePickerTextField` for selecting dates with a user-friendly interface. This package makes it easy to incorporate styled text fields into your SwiftUI applications.
+## Introduction
+`TextFieldPalette` est un package Swift qui fournit une collection de champs de texte personnalisables, y compris `PaletteDatePickerTextField`, un champ de texte avec un sélecteur de date intégré pour une expérience utilisateur fluide. Ce package permet d'incorporer facilement des champs de texte stylisés dans vos applications SwiftUI.
 
-<img src="https://github.com/user-attachments/assets/078dd831-1ca2-466a-a12a-005505cb3d44" alt="Simulator Screenshot - iPhone" width="400"/>  <!-- Adjust the width as needed -->
+<img src="https://github.com/user-attachments/assets/078dd831-1ca2-466a-a12a-005505cb3d44" alt="Simulator Screenshot - iPhone" width="400"/>
 
-## Features
+---
 
-- **PaletteDatePickerTextField**: A date picker integrated into a text field that allows users to select a date using a `UIDatePicker`.
-- **Optional Date Support**: Allows for nil values, making it easy to manage dates that may not always be set.
-- **Date Range Limitation**: Specify minimum and maximum dates to restrict user selection.
+## Fonctionnalités
+
+- **PaletteDatePickerTextField** : Un champ de texte avec un sélecteur de date intégré (`UIDatePicker`).
+- **Gestion des valeurs optionnelles** : Supporte les dates nulles, facilitant la gestion des champs facultatifs.
+- **Restriction de plage de dates** : Définissez une date minimale et une date maximale pour limiter la sélection.
+
+---
 
 ## Installation
 
-To integrate `TextFieldPalette` into your SwiftUI project, follow these steps:
+Pour intégrer `TextFieldPalette` dans votre projet SwiftUI, suivez ces étapes :
 
-1. Open your project in Xcode.
-2. Select your project file in the Project Navigator.
-3. Choose your app target and navigate to the "Package Dependencies" tab.
-4. Click on the "+" button to add a new package.
-5. Enter the package repository URL: `https://github.com/LACHKAR99ZAKARIA/TextFieldPalette.git`.
-6. Choose the version to install.
+1. Ouvrez votre projet dans Xcode.
+2. Sélectionnez votre fichier projet dans le Project Navigator.
+3. Choisissez votre cible d'application et accédez à l'onglet "Package Dependencies".
+4. Cliquez sur le bouton "+" pour ajouter un nouveau package.
+5. Entrez l'URL du dépôt : `https://github.com/LACHKAR99ZAKARIA/TextFieldPalette.git`.
+6. Sélectionnez la version à installer.
 
-## Usage
+---
 
-### Importing the Package
+## Utilisation
 
-To use `TextFieldPalette`, import it into your SwiftUI view:
+### Importation du package
+
+Avant d'utiliser `TextFieldPalette`, importez-le dans votre vue SwiftUI :
 
 ```swift
 import TextFieldPalette
 ```
 
-## Demo Code
-Here’s a simple demo of how to use the `PaletteDatePickerTextField` in your SwiftUI application:
+### Exemple d'utilisation
 
-```
+Voici un exemple simple d'intégration du `PaletteDatePickerTextField` :
+
+```swift
 import SwiftUI
 import TextFieldPalette
 
 struct DemoView: View {
-    @State private var selectedDate: Date? = nil // Optional date for the date picker
+    @State private var selectedDate: Date? = nil // Date optionnelle
 
     var body: some View {
         VStack(spacing: 20) {
-            // PaletteDatePickerTextField for selecting a date
-            PaletteDatePickerTextField(selectedDate: $selectedDate,
-                                        placeholder: "Select Date",
-                                        minDate: Date(), // Minimum date is today
-                                        maxDate: Calendar.current.date(byAdding: .year, value: 1, to: Date())) // Maximum date is one year from now
-                .padding()
+            PaletteDatePickerTextField(
+                selectedDate: $selectedDate,
+                placeholder: "Sélectionner une date",
+                minDate: Date(),
+                maxDate: Calendar.current.date(byAdding: .year, value: 1, to: Date())
+            )
+            .padding()
 
-            // Display the selected date
             if let date = selectedDate {
-                Text("Selected date: \(date, formatter: dateFormatter)")
+                Text("Date sélectionnée : \(date, formatter: dateFormatter)")
                     .padding()
             } else {
-                Text("No date selected")
+                Text("Aucune date sélectionnée")
                     .padding()
             }
         }
-        .padding() // Padding for the entire view
+        .padding()
     }
 
-    // Date formatter for displaying the selected date
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -77,24 +84,56 @@ struct DemoView_Previews: PreviewProvider {
 }
 ```
 
-## Demo GIF
-<!-- Replace with your GIF path -->
+---
 
-Parameters
-- **`selectedDate`**: A binding to the currently selected date (optional).
-- **`placeholder`**: A placeholder string that appears in the text field when no date is selected.
-- **`minDate`**: An optional minimum date for the date picker.
-- **`maxDate`**: An optional maximum date for the date picker.
-  
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+## PaletteCustomTextField
 
-## Contributing
-Contributions are welcome! Please feel free to submit a pull request or open an issue for any improvements or bugs.
+`PaletteCustomTextField` permet de créer un champ de texte personnalisé en SwiftUI, incluant un clavier personnalisé.
 
+<img src="https://github.com/user-attachments/assets/7c7dea2b-0091-47a4-9309-7eb118d69392" alt="Custom Text Field" width="400"/>
 
-### Adjustments Made:
-- Changed the code block notation from ```swift to `/swift` for compatibility.
-- Made sure the formatting is clear and professional for a README.
+### Exemple d'utilisation
 
-Feel free to replace the GIF path placeholder with the actual path to your demo GIF. If you have any more changes or requests, just let me know!
+```swift
+PaletteCustomTextField(
+    placeholder: "Placeholder",
+    text: $text
+) {
+    LazyVGrid(columns: columns) {
+        ForEach(1...9, id: \ .self) { i in
+            Text(String(i))
+                .padding()
+                .onTapGesture {
+                    text = String(i)
+                }
+        }
+    }
+}
+```
+
+---
+
+## Paramètres
+
+### `PaletteDatePickerTextField`
+- **`selectedDate`** : Liaison à la date sélectionnée (optionnelle).
+- **`placeholder`** : Texte indicatif affiché lorsque aucune date n'est sélectionnée.
+- **`minDate`** : Date minimale (optionnelle).
+- **`maxDate`** : Date maximale (optionnelle).
+
+---
+
+## Démo GIF
+
+Ajoutez ici un GIF démontrant l'utilisation du package.
+
+---
+
+## Licence
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+---
+
+## Contribution
+Les contributions sont les bienvenues ! N'hésitez pas à soumettre une pull request ou à ouvrir une issue pour toute amélioration ou correction de bug.
+
